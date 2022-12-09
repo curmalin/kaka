@@ -19,4 +19,4 @@ jobs:
         chmod -R 700 ~/.ssh        
     - name: Rsync deployment
       run: |
-                rsync -avz -e --rsh="ssh -p22490" --delete . bastuhol@bastuholmen.se:/var/www/
+                rsync -arvz -e "ssh -p22490" --delete . bastuhol@bastuholmen.se:/var/www/
