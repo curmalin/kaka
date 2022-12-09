@@ -14,4 +14,4 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }} 
    
       - name: Rsync deployment
-        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}"  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/bastuhol/kaka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
+        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}"  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/bastuhol/kaka
