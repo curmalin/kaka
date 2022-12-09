@@ -6,17 +6,15 @@ jobs:
     name: Deploy Job
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: SSH setup
-      env:
-        DEPLOY_KEY: ${{ secrets.deploy_key }}
-        KNOWN_HOSTS: ${{ secrets.known_hosts }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "${KNOWN_HOSTS}" >> ~/.ssh/known_hosts
-        echo "${DEPLOY_KEY}" > ~/.ssh/my_rsync_key
-        echo "IdentityFile ~/.ssh/my_rsync_key" >> ~/.ssh/config
-        chmod -R 700 ~/.ssh        
-    - name: Rsync deployment
-      run: |
-                rsync -arvz -e "ssh -p22490" --delete . bastuhol@bastuholmen.se:/var/www/
+      - uses: actions/checkout@v2
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_SECRET_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts 
+   
+      - name: Rsync deployment
+        run: run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/bastuhol/kaka

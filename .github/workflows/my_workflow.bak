@@ -1,0 +1,22 @@
+name: Deploy
+on: push
+
+jobs:
+  my_job:
+    name: Deploy Job
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: SSH setup
+      env:
+        DEPLOY_KEY: ${{ secrets.deploy_key }}
+        KNOWN_HOSTS: ${{ secrets.known_hosts }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "${KNOWN_HOSTS}" >> ~/.ssh/known_hosts
+        echo "${DEPLOY_KEY}" > ~/.ssh/my_rsync_key
+        echo "IdentityFile ~/.ssh/my_rsync_key" >> ~/.ssh/config
+        chmod -R 700 ~/.ssh        
+    - name: Rsync deployment
+      run: |
+                rsync -arvz -e "ssh -p22490" --delete . bastuhol@bastuholmen.se:/var/www/
