@@ -1,3 +1,12 @@
+
+---
+output: 
+  html_document:
+     css: styles.css
+     self_contained: no
+
+---
+
 # Protokoll
 ## Mötets öppnande
 Ordföramde förklarade mötet öppnat.
